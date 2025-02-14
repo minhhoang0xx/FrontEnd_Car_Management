@@ -7,7 +7,7 @@ import dayjs from "dayjs";
 const { Option } = Select;
 
 const UpdatePage = () => {
-    const { carId } = useParams(); // Lấy ID xe từ URL
+    const { id } = useParams(); 
     const navigate = useNavigate();
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
@@ -15,13 +15,15 @@ const UpdatePage = () => {
     useEffect(() => {
         const fetchCar = async () => {
             try {
-                const car = await CarService.getCar(carId);
+                console.log("get Car1", id)
+                const car = await CarService.getCar(id);
+                console.log("get Car", car)
                 if (car) {
                     form.setFieldsValue({
-                        Bien_So_Xe: car.Bien_So_Xe,
-                        Loai_Xe: car.Loai_Xe,
-                        Ngay_Tao: dayjs(car.Ngay_Tao), 
-                        Trang_Thai: car.Trang_Thai,
+                        Bien_So_Xe: car.bien_So_Xe,
+                        Loai_Xe: car.loai_Xe,
+                        Ngay_Tao: dayjs(car.ngay_Tao), 
+                        Trang_Thai: car.trang_Thai,
                     });
                 }
             } catch (error) {
@@ -29,16 +31,16 @@ const UpdatePage = () => {
             }
         };
         fetchCar();
-    }, [carId, form]);
+    }, [id, form]);
 
-    const handleUpdate = async (values) => {
+    const handleUpdate = async (data) => {
         try {
             setLoading(true);
             const updatedCar = {
-                ...values,
-                Ngay_Tao: values.Ngay_Tao.format("YYYY-MM-DD"), // Chuyển Date về chuỗi
+                ...data,
+                Ngay_Tao: data.Ngay_Tao.format("YYYY-MM-DD"), // Chuyển Date về chuỗi
             };
-            await CarService.updateCar(carId, updatedCar);
+            await CarService.updateCar(id, updatedCar);
             message.success("Success");
             navigate("/"); 
         } catch (error) {
@@ -91,7 +93,7 @@ const UpdatePage = () => {
                         Update
                     </Button>
                     <Button onClick={() => navigate("/")} style={{ marginLeft: "10px" }}>
-                        Cancle
+                        Cancel
                     </Button>
                 </Form.Item>
             </Form>

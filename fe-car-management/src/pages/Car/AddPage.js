@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Form, Input, Button, message, Select, DatePicker } from 'antd';
 import * as CarService from '../../services/CarService';
+import { useNavigate } from 'react-router-dom';
 const { Option } = Select;
 const AddPage = () => {
+    const navigate = useNavigate();
     const [form] = Form.useForm();
 
     const onFinish = async (values) => {
@@ -21,8 +23,13 @@ const AddPage = () => {
     };
 
     return (
-        <div style={{ padding: '60px', background: '#f5f5f5', height: '100vh' }}>
-            <h1>Add Car</h1>
+        
+        <div style={{ padding: '10px 60px', background: '#f5f5f5', height: '100vh' }}>
+            <Button onClick={() => navigate("/")}>
+                Car List
+            </Button>
+       
+            <h1 style={{textAlign:'center'}}>ADD NEW CAR</h1>
             <Form form={form} layout="vertical" onFinish={onFinish}>
                 <Form.Item
                     name="Bien_So_Xe"

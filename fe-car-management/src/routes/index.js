@@ -13,7 +13,7 @@ export const routes =[
         page: AddPage,
     },
     {
-        path: '/updateCar',
+        path: '/updateCar/:id',
         page: UpdatePage,
     },
 

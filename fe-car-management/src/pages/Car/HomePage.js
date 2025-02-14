@@ -3,44 +3,48 @@ import * as CarService from "../../services/CarService"
 import React, { useEffect, useState } from 'react';
 import { Button, Space, Table, Tag } from 'antd';
 import { useNavigate } from "react-router-dom";
+import dayjs from 'dayjs';
 const columns =(navigate, handleDelete) => [
     {
         title: 'ID',
-        dataIndex: 'ID',
-        key: 'ID',
+        dataIndex: 'id',
+        key: 'id',
     },
     {
         title: 'Biển Số Xe',
-        dataIndex: 'Bien_So_Xe',
-        key: 'Bien_So_Xe',
+        dataIndex: 'bien_So_Xe',
+        key: 'bien_So_Xe',
         render: (text) => <a>{text}</a>,
     },
     {
         title: 'Loại Xe',
-        dataIndex: 'Loai_Xe',
-        key: 'Loai_Xe',
+        dataIndex: 'loai_Xe',
+        key: 'loai_Xe',
     },
     {
         title: 'Ngày Tạo',
-        dataIndex: 'Ngay_Tao',
-        key: 'Ngay_Tao',
+        dataIndex: 'ngay_Tao',
+        key: 'ngay_Tao',
+        render: (date) => date ? dayjs(date).format('YYYY-MM-DD') : 'N/A',
     },
     {
-        title: 'Trạng Thái',
-        key: 'Trang_Thai',
-        dataIndex: 'Trang_Thai',
+        title: 'rạng Thái',
+        key: 'trang_Thai',
+        dataIndex: 'trang_Thai',
         render: (tag) => {
-            let color = tag === 'USED' ? 'volcano' : 'green';
-            return <Tag color={color}>{tag.toUpperCase()}</Tag>;
-        },
+            if (!tag) return <Tag color="default">N/A</Tag>;
+            const color = tag.toUpperCase() === 'USED' ? 'red' : 'green';
+            const text = tag.toUpperCase() === 'USED' ? 'USED' : 'NEW';
+            return <Tag color={color}>{text}</Tag>;
+        }
     },
     {
         title: 'Thao Tác',
         key: 'action',
         render: (_, record) => (
             <Space size="middle">
-                <a onClick={() => navigate(`/updateCar/${record.ID}`)}>Update</a>
-                <a onClick={() => handleDelete(record.ID)}>Delete</a>
+                <a onClick={() => navigate(`/updateCar/${record.id}`)}>Update</a>
+                <a onClick={() => handleDelete(record.id)}>Delete</a>
             </Space>
         ),
     },
@@ -51,9 +55,9 @@ const HomePage = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                console.log("ENV", process.env.REACT_APP_API_URL)
                 const cars = await CarService.getAllCar();
-                setData(cars); //cap nhat state
+                console.log("Data từ API:", cars);
+                setData(cars.map(car => ({ ...car, key: car.ID }))); 
             } catch (error) {
                 console.error("Failed to fetch cars:", error);
             }
@@ -63,7 +67,7 @@ const HomePage = () => {
     const handleDelete = async (id) => {
         try {
             await CarService.deleteCar(id); 
-            setData(prevData => prevData.filter(car => car.ID !== id));
+            setData(prevData => prevData.filter(car => car.id !== id));
         } catch (error) {
             console.error("Failed to delete car:", error);
         }
@@ -72,7 +76,7 @@ const HomePage = () => {
         <div style={{ padding: '60px', background: '#f5f5f5', height: '100vh' }}>
             <div>
                 <Button type="primary" onClick={() => navigate('/addCar')}>
-                    Add New Car
+                    + Add New Car
                 </Button>
             </div>
 
