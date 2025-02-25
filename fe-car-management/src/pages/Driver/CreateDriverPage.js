@@ -87,7 +87,7 @@ const CreateDriverPage = () => {
                     name="ListCarId"
                     label="Chọn Xe"
                     rules={[{
-                        required: true,
+                        required: false,
                         message: 'Vui lòng chọn ít nhất một xe',
                         type: 'array'
                     }]}

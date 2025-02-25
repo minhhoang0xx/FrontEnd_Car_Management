@@ -83,7 +83,7 @@ const UpdateDriverPage = () => {
                         <Option value="DISABLE">DISABLE</Option>
                     </Select>
                 </Form.Item>
-                <Form.Item name="ListCarId" label="Chọn Xe" rules={[{ required: true, message: "Chọn ít nhất một xe", type: "array" }]}> 
+                <Form.Item name="ListCarId" label="Chọn Xe" rules={[{ required: false, message: "Chọn ít nhất một xe", type: "array" }]}> 
                     <Select mode="multiple" placeholder="Chọn xe">
                         {carList.map(car => (
                             <Option key={car.id} value={car.id}>

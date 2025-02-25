@@ -14,7 +14,6 @@ const columns =(navigate, handleDelete) => [
         title: 'Tên Tài Xế',
         dataIndex: 'username',
         key: 'username',
-        render: (text) => <a>{text}</a>,
     },
     {
         title: 'Xe',
